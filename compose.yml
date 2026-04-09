@@ -1,0 +1,20 @@
+---
+name: csln
+
+services:
+  main:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM docker.io/python:3.12
+        WORKDIR /opt/csln
+
+        COPY requirements.txt /tmp/requirements.txt
+        RUN pip install --no-cache-dir -r /tmp/requirements.txt
+    command: python3 -m csln.application
+    env_file: environment
+    volumes:
+      - type: bind
+        source: ./
+        target: /opt/csln
+        read_only: true
